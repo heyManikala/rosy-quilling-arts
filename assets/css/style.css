@@ -1,0 +1,241 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    background: #faf7f5;
+    color: #333;
+}
+
+h1 {
+    text-align: center;
+    color: #b76e79;
+    margin-top: 20px;
+}
+
+a {
+    text-decoration: none;
+    color: white;
+    background: #b76e79;
+    padding: 8px 12px;
+    border-radius: 5px;
+    margin: 5px;
+    display: inline-block;
+}
+
+a:hover {
+    background: #8c4c55;
+}
+
+.gallery-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+    padding: 20px;
+}
+
+.card {
+    background: white;
+    padding: 15px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: 0.3s;
+}
+
+.card:hover {
+    transform: scale(1.05);
+}
+
+.card h3 {
+    color: #b76e79;
+}
+
+.dashboard-container {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 30px;
+}
+
+.dashboard-container .card {
+    width: 200px;
+    text-align: center;
+}
+
+.card img {
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+button,
+input[type="submit"] {
+    background: #b76e79;
+    color: white;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 5px;
+}
+
+button:hover {
+    background: #8c4c55;
+}
+
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 20px;
+    background: #b76e79;
+}
+
+/* LOGO CONTAINER */
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: bold;
+    color: white;
+}
+
+/* THIS IS THE IMPORTANT FIX */
+.logo img {
+    height: 40px;
+    /* change size here */
+    width: auto;
+    object-fit: contain;
+}
+
+.footer {
+    background: #b76e79;
+    color: white;
+    text-align: center;
+    padding: 30px 20px;
+    margin-top: 50px;
+}
+
+.footer h3 {
+    color: white;
+    margin-bottom: 10px;
+}
+
+.footer p {
+    margin: 8px 0;
+}
+
+.footer a {
+    color: white;
+    text-decoration: none;
+    background: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer a:hover {
+    text-decoration: underline;
+    background: none;
+}
+
+.copyright {
+    margin-top: 15px;
+    font-size: 14px;
+}
+
+
+/* NAVBAR */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background: #b76e79;
+}
+
+/* SEARCH BOX */
+.search-box input {
+    padding: 6px;
+    border-radius: 5px;
+    border: none;
+}
+
+/* HERO */
+.hero {
+    text-align: center;
+    padding: 80px 20px;
+    background: linear-gradient(135deg, #fff0f5, #ffffff);
+}
+
+/* CARDS */
+.card {
+    background: white;
+    padding: 15px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+
+
+/* ===== INSTAGRAM GRID FIX ===== */
+/* GALLERY GRID - Pinterest style */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 15px;
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.card {
+    background: white;
+    border-radius: 14px;
+    box-shadow: 0 4px 15px rgba(183, 110, 121, 0.1);
+    overflow: hidden;
+    transition: transform 0.3s, box-shadow 0.3s;
+    text-align: center;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(183, 110, 121, 0.2);
+}
+
+.card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    display: block;
+}
+
+.card h3 {
+    color: #b76e79;
+    margin: 10px 0 5px;
+    font-size: 15px;
+    padding: 0 10px;
+}
+
+.card p {
+    color: #777;
+    margin: 0 0 12px;
+    font-size: 14px;
+}
+
+.btn-pink {
+    display: inline-block;
+    background: #b76e79;
+    color: white;
+    padding: 10px 24px;
+    border-radius: 25px;
+    text-decoration: none;
+    font-size: 15px;
+    transition: 0.3s;
+}
+
+.btn-pink:hover {
+    background: #8c4c55;
+    transform: translateY(-2px);
+}
+
+.logo {
+    text-decoration: none;
+    color: white;
+}
