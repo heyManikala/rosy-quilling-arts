@@ -24,6 +24,64 @@ $result = mysqli_query($conn, $query);
 
     <style>
         /* SEARCH BOX */
+        .card-img-wrapper {
+    position: relative;
+    overflow: visible;
+}
+
+.three-dots {
+    position: absolute;
+    bottom: 8px;
+    right: 8px;
+    background: white;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    z-index: 10;
+}
+
+.three-dots:hover {
+    background: #f5f5f5;
+}
+
+.dots-menu {
+    display: none;
+    position: absolute;
+    bottom: 45px;
+    right: 8px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+    z-index: 100;
+    min-width: 170px;
+    overflow: hidden;
+}
+
+.dots-menu a {
+    display: block;
+    padding: 10px 15px;
+    color: #333;
+    text-decoration: none;
+    font-size: 14px;
+    background: none;
+    border-radius: 0;
+    margin: 0;
+}
+
+.dots-menu a:hover {
+    background: #faf0f2;
+    color: #b76e79;
+}
+
+.dots-menu.active {
+    display: block;
+}
         .search-box {
             text-align: center;
             margin: 20px;
@@ -150,13 +208,32 @@ $result = mysqli_query($conn, $query);
 
 <?php while($row = mysqli_fetch_assoc($result)) { ?>
 <div class="card">
-    <img src="assets/images/<?php echo htmlspecialchars($row['image']); ?>"
-         onclick="openLightbox(this.src)">
-    <div class="overlay">
-        <a href="view.php?id=<?php echo $row['id']; ?>">View Details</a>
+
+    <div class="card-img-wrapper">
+        <img src="assets/images/<?php echo htmlspecialchars($row['image']); ?>"
+             onclick="openLightbox(this.src)">
+
+        <div class="overlay">
+            <a href="view.php?id=<?php echo $row['id']; ?>">View Details</a>
+        </div>
+
+        <!-- 3 DOTS BUTTON -->
+        <div class="three-dots" onclick="toggleMenu(this)">⋯</div>
+
+        <!-- DROPDOWN MENU -->
+        <div class="dots-menu">
+            <a href="assets/images/<?php echo $row['image']; ?>" download>
+                ⬇️ Download Image
+            </a>
+            <a href="#" onclick="openLightbox('assets/images/<?php echo $row['image']; ?>'); return false;">
+                🔍 View Large
+            </a>
+        </div>
     </div>
+
     <h3><?php echo htmlspecialchars($row['title']); ?></h3>
-    <p>Rs. <?php echo htmlspecialchars($row['price']); ?></p>
+    <p>Rs. <?php echo $row['price'] ? $row['price'] : '...'; ?></p>
+
 </div>
 <?php } ?>
 
@@ -177,6 +254,23 @@ function openLightbox(imgSrc) {
 function closeLightbox() {
     document.getElementById("lightbox").style.display = "none";
 }
+
+function toggleMenu(dotsEl) {
+    document.querySelectorAll('.dots-menu.active').forEach(function(menu) {
+        if (menu !== dotsEl.nextElementSibling) {
+            menu.classList.remove('active');
+        }
+    });
+    dotsEl.nextElementSibling.classList.toggle('active');
+}
+
+document.addEventListener('click', function(e) {
+    if (!e.target.classList.contains('three-dots')) {
+        document.querySelectorAll('.dots-menu.active').forEach(function(menu) {
+            menu.classList.remove('active');
+        });
+    }
+});
 </script>
 
 <style>
