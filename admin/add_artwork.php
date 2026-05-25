@@ -14,6 +14,7 @@ if (isset($_POST['submit'])) {
 $title = $_POST['title'];
 $description = $_POST['description'];
 $price = $_POST['price'];
+$category = $_POST['category'];
 
     $image = $_FILES['image']['name'];
     $tmp = $_FILES['image']['tmp_name'];
@@ -22,9 +23,8 @@ $price = $_POST['price'];
 
     move_uploaded_file($tmp, $folder);
 
-    $query = "INSERT INTO gallery (title, description, price, image)
-          VALUES ('$title', '$description', '$price', '$image')";
-
+    $query = "INSERT INTO gallery (title, description, price, image, category)
+VALUES ('$title', '$description', '$price', '$image', '$category')";
     mysqli_query($conn, $query);
 
     $message = "Artwork added successfully!";
@@ -40,6 +40,8 @@ $price = $_POST['price'];
 <input type="text" name="title" placeholder="Title"><br><br>
 
 <input type="text" name="price" placeholder="Price"><br><br>
+
+<input type="text" name="category" placeholder="Category (flower/gift/wedding)"><br><br>
 
 <textarea name="description" placeholder="Description"></textarea><br><br>
 

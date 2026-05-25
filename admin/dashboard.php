@@ -65,6 +65,12 @@ $total = $data['total'];
     <p><?php echo $total; ?></p>
 </div>  
 
+<div class="card">
+    <h3>📩 Messages</h3>
+    <p>View contact form messages</p>
+    <a href="messages.php">Open</a>
+</div>
+
 </div>
 
 </div>

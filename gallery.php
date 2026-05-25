@@ -4,16 +4,35 @@ session_start();
 
 $search = "";
 
+$limit = 8; // items per page
+
+$page = isset($_GET['page']) ? $_GET['page'] : 1;
+$offset = ($page - 1) * $limit;
+
 if (isset($_GET['search'])) {
     $search = $_GET['search'];
+
     $query = "SELECT * FROM gallery 
               WHERE title LIKE '%$search%' 
-              ORDER BY id DESC";
+              ORDER BY id DESC
+              LIMIT $limit OFFSET $offset";
+
+    $countQuery = "SELECT COUNT(*) as total FROM gallery 
+                   WHERE title LIKE '%$search%'";
 } else {
-    $query = "SELECT * FROM gallery ORDER BY id DESC";
+
+    $query = "SELECT * FROM gallery 
+              ORDER BY id DESC
+              LIMIT $limit OFFSET $offset";
+
+    $countQuery = "SELECT COUNT(*) as total FROM gallery";
 }
 
 $result = mysqli_query($conn, $query);
+$countResult = mysqli_query($conn, $countQuery);
+
+$totalRow = mysqli_fetch_assoc($countResult);
+$totalPages = ceil($totalRow['total'] / $limit);
 ?>
 
 <!DOCTYPE html>
@@ -238,6 +257,26 @@ $result = mysqli_query($conn, $query);
 <?php } ?>
 
 </div>
+</div>
+
+<!-- PAGINATION -->
+<div style="text-align:center; margin:30px;">
+
+<?php if($page > 1) { ?>
+    <a href="?page=<?php echo $page - 1; ?>&search=<?php echo $search; ?>">⬅ Prev</a>
+<?php } ?>
+
+<?php for($i = 1; $i <= $totalPages; $i++) { ?>
+    <a href="?page=<?php echo $i; ?>&search=<?php echo $search; ?>"
+       style="background: <?php echo ($page == $i) ? '#8c4c55' : '#b76e79'; ?>;">
+        <?php echo $i; ?>
+    </a>
+<?php } ?>
+
+<?php if($page < $totalPages) { ?>
+    <a href="?page=<?php echo $page + 1; ?>&search=<?php echo $search; ?>">Next ➡</a>
+<?php } ?>
+
 </div>
 
 <!-- LIGHTBOX POPUP -->

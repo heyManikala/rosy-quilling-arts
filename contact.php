@@ -1,5 +1,17 @@
-<?php include("includes/db.php"); session_start(); ?>
+<?php
+include("includes/db.php");
+session_start();
 
+if (isset($_POST['send'])) {
+
+    $name = $_POST['name'];
+    $email = $_POST['email'];
+    $message = $_POST['message'];
+
+    mysqli_query($conn, "INSERT INTO messages (name, email, message)
+    VALUES ('$name', '$email', '$message')");
+}
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -24,11 +36,11 @@
 <p>📱 WhatsApp: +977-98XXXXXXXX</p>
 <p>📧 Email: rosyquilling@gmail.com</p>
 
-<form>
-    <input type="text" placeholder="Name"><br><br>
-    <input type="email" placeholder="Email"><br><br>
-    <textarea placeholder="Message"></textarea><br><br>
-    <button type="submit">Send</button>
+<form method="POST" action="contact.php">
+    <input type="text" name="name" placeholder="Name" required><br><br>
+    <input type="email" name="email" placeholder="Email" required><br><br>
+    <textarea name="message" placeholder="Message" required></textarea><br><br>
+    <button type="submit" name="send">Send</button>
 </form>
 
 </div>

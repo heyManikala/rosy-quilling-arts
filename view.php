@@ -17,6 +17,7 @@ if (!$row) {
 <head>
     <title><?php echo $row['title']; ?> - Rosy Quilling Arts</title>
     <link rel="stylesheet" href="assets/css/style.css">
+    <meta name="description" content="Buy <?php echo $row['title']; ?> handmade paper quilling art by Rosy Quilling Arts. Perfect for gifts, decoration, and special occasions.">
 
     <style>
         .view-container {
@@ -138,6 +139,21 @@ if (!$row) {
             <?php echo $row['description']; ?>
         </div>
 
+        <!-- SHARE BUTTONS -->
+<div style="margin-top:20px;">
+
+    <a href="https://wa.me/?text=<?php echo urlencode($row['title'] . ' - http://localhost/rosy-quilling-arts/view.php?id=' . $row['id']); ?>" target="_blank">
+        WhatsApp
+    </a>
+
+    <a href="https://www.facebook.com/sharer/sharer.php?u=<?php echo urlencode('http://localhost/rosy-quilling-arts/view.php?id=' . $row['id']); ?>" target="_blank">
+        Facebook
+    </a>
+
+    <button onclick="copyLink()">Copy Link</button>
+
+</div>
+
         <a href="gallery.php" class="back-btn">← Back to Gallery</a>
 
         <!-- SHOW EDIT/DELETE ONLY IF ADMIN IS LOGGED IN -->
@@ -154,6 +170,13 @@ if (!$row) {
     </div>
 
 </div>
+
+<script>
+function copyLink() {
+    navigator.clipboard.writeText(window.location.href);
+    alert("Link copied!");
+}
+</script>
 
 </body>
 </html>
