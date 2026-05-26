@@ -12,6 +12,6 @@ $id = $_GET['id'];
 $query = "DELETE FROM gallery WHERE id=$id";
 mysqli_query($conn, $query);
 
-header("Location: ../gallery.php");
+header("Location: manage_artworks.php");
 exit();
 ?>

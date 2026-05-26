@@ -1,6 +1,6 @@
 <?php
-include("includes/db.php");
 session_start();
+include("includes/db.php");
 
 $search = "";
 
@@ -274,7 +274,7 @@ $totalPages = ceil($totalRow['total'] / $limit);
 <?php } ?>
 
 <?php if($page < $totalPages) { ?>
-    <a href="?page=<?php echo $page + 1; ?>&search=<?php echo $search; ?>">Next ➡</a>
+    <a href=" ?page=<?php echo $page + 1; ?>&search=<?php echo $search; ?>">Next ➡</a>
 <?php } ?>
 
 </div>
@@ -333,5 +333,6 @@ document.addEventListener('click', function(e) {
 }
 </style>
 
+<?php include("includes/footer.php"); ?>
 </body>
 </html>

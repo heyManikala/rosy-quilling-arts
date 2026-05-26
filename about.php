@@ -1,4 +1,7 @@
-<?php include("includes/db.php"); session_start(); ?>
+<?php
+session_start();
+include("includes/db.php");
+?>
 
 <!DOCTYPE html>
 <html>
@@ -22,6 +25,7 @@
 
 </div>
 
+<?php include("includes/footer.php"); ?>
 </body>
 </html>
 
