@@ -225,24 +225,62 @@ $recentResult = mysqli_query($conn, "SELECT * FROM gallery ORDER BY id DESC LIMI
 <div class="dashboard-main">
 
     <!-- STATS -->
-    <div class="stats-row">
-        <div class="stat-card">
-            <div class="icon">🖼</div>
-            <div class="number"><?php echo $total; ?></div>
-            <div class="label">Total Artworks</div>
-        </div>
-        <div class="stat-card">
-            <div class="icon">📩</div>
-            <div class="number"><?php echo $totalMessages; ?></div>
-            <div class="label">Total Messages</div>
-        </div>
-        <div class="stat-card">
-            <div class="icon">🌸</div>
-            <div class="number">Rosy</div>
-            <div class="label">Admin Account</div>
-        </div>
+<div class="stats-row">
+
+    <!-- TOTAL ARTWORKS → shows artworks below -->
+    <div class="stat-card" onclick="toggleSection('artworksSection')" style="cursor:pointer;">
+        <div class="icon">🖼</div>
+        <div class="number"><?php echo $total; ?></div>
+        <div class="label">Total Artworks</div>
+        <div style="color:#b76e79; font-size:12px; margin-top:8px;">Click to View →</div>
     </div>
 
+    <!-- TOTAL MESSAGES → goes to messages page -->
+    <a href="messages.php" class="stat-card" style="text-decoration:none;">
+        <div class="icon">📩</div>
+        <div class="number"><?php echo $totalMessages; ?></div>
+        <div class="label">Total Messages</div>
+        <div style="color:#b76e79; font-size:12px; margin-top:8px;">Click to View →</div>
+    </a>
+
+    <!-- ADMIN ACCOUNT → goes to profile edit page -->
+    <a href="profile.php" class="stat-card" style="text-decoration:none;">
+        <div class="icon">🌸</div>
+        <div class="number">⚙️</div>
+        <div class="label">Admin Account</div>
+        <div style="color:#b76e79; font-size:12px; margin-top:8px;">Edit Profile →</div>
+    </a>
+
+</div>
+
+<!-- ARTWORKS DROPDOWN SECTION -->
+<div id="artworksSection" style="display:none; margin-bottom:25px;">
+    <div style="
+        background:white;
+        border-radius:16px;
+        padding:20px;
+        box-shadow:0 4px 20px rgba(183,110,121,0.15);
+    ">
+        <h3 style="color:#b76e79; margin-bottom:15px;">🖼 All Artworks (<?php echo $total; ?>)</h3>
+        <div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:15px;">
+            <?php
+            $allArt = mysqli_query($conn, "SELECT * FROM gallery ORDER BY id DESC");
+            while($art = mysqli_fetch_assoc($allArt)) {
+            ?>
+            <div style="text-align:center;">
+                <img src="../assets/images/<?php echo $art['image']; ?>"
+                     style="width:100%; height:120px; object-fit:cover; border-radius:10px;">
+                <p style="color:#b76e79; font-size:13px; margin-top:5px;">
+                    <?php echo $art['title']; ?>
+                </p>
+                <p style="color:#888; font-size:12px;">
+                    Rs. <?php echo $art['price'] ? $art['price'] : '...'; ?>
+                </p>
+            </div>
+            <?php } ?>
+        </div>
+    </div>
+</div>
     <!-- QUICK ACTIONS -->
     <h2 class="section-title">⚡ Quick Actions</h2>
     <div class="actions-grid">
@@ -283,6 +321,16 @@ $recentResult = mysqli_query($conn, "SELECT * FROM gallery ORDER BY id DESC LIMI
     </div>
 
 </div>
+<script>
+function toggleSection(id) {
+    var el = document.getElementById(id);
+    if (el.style.display === 'none') {
+        el.style.display = 'block';
+    } else {
+        el.style.display = 'none';
+    }
+}
+</script>
 
 </body>
 </html>

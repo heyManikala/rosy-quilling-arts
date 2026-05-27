@@ -54,6 +54,37 @@ $result = mysqli_query($conn, "SELECT * FROM messages ORDER BY id DESC");
         <h3><?php echo $row['name']; ?></h3>
         <small><?php echo $row['email']; ?> | <?php echo $row['created_at']; ?></small>
         <p><?php echo $row['message']; ?></p>
+        <div style="margin-top:15px;">
+
+    <a href="mailto:<?php echo $row['email']; ?>?
+subject=Reply from Rosy Quilling Arts"
+    
+    style="
+    background:#b76e79;
+    color:white;
+    padding:8px 15px;
+    border-radius:20px;
+    text-decoration:none;
+    display:inline-block;
+    ">
+        ✉️ Reply
+    </a>
+
+</div>
+<a href="delete_message.php?id=<?php echo $row['id']; ?>"
+   onclick="return confirm('Delete this message?')"
+
+   style="
+   background:#d9534f;
+   color:white;
+   padding:8px 15px;
+   border-radius:20px;
+   text-decoration:none;
+   margin-left:10px;
+   display:inline-block;
+   ">
+   🗑 Delete
+</a>
     </div>
 
 <?php } ?>

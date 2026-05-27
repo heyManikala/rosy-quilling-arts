@@ -1,6 +1,8 @@
 <?php
 session_start();
 include("includes/db.php");
+$adminQuery = mysqli_query($conn, "SELECT * FROM admins LIMIT 1");
+$adminData = mysqli_fetch_assoc($adminQuery);
 ?>
 
 <!DOCTYPE html>
@@ -126,9 +128,7 @@ include("includes/db.php");
 <h2 class="section-title">💖 About Us</h2>
 <div class="about">
     <p>
-        Rosy Quilling Arts is a handmade craft studio creating unique paper quilling designs
-        for gifts, decoration, and special occasions. Every artwork is made with creativity,
-        patience, and love.
+        <?php echo nl2br($adminData['about']); ?>
     </p>
     <div style="text-align:center; margin-top:15px;">
         <a href="about.php" class="btn-pink">Read More About Us</a>
@@ -164,9 +164,11 @@ while($row = mysqli_fetch_assoc($result)) {
 <!-- CONTACT SECTION -->
 <h2 class="section-title">📞 Contact</h2>
 <div class="contact">
-    <p>📸 Instagram: @rosyquilling.arts</p>
-    <p>📱 WhatsApp: +977-98XXXXXXXX</p>
-    <p>📧 Email: rosyquilling@gmail.com</p>
+       <p>📸 Instagram: <?php echo $adminData['instagram']; ?></p>
+
+       <p>📱 WhatsApp: <?php echo $adminData['whatsapp']; ?></p>
+
+       <p>📧 Email: <?php echo $adminData['email']; ?></p>
     <div style="margin-top:15px;">
         <a href="contact.php" class="btn-pink">Get In Touch</a>
     </div>

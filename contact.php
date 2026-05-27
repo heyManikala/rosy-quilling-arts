@@ -1,6 +1,8 @@
 <?php
 session_start();
 include("includes/db.php");
+$adminQuery = mysqli_query($conn, "SELECT * FROM admins LIMIT 1");
+$adminData = mysqli_fetch_assoc($adminQuery);
 
 $success = "";
 
@@ -116,11 +118,12 @@ if (isset($_POST['send'])) {
             <a href="https://www.instagram.com/rosyquilling.arts" 
                target="_blank" 
                style="background:none; color:#b76e79; padding:0;">
-               @rosyquilling.arts
+               <?php echo $adminData['instagram']; ?>
             </a>
         </p>
-        <p>📱 WhatsApp: +977-98XXXXXXXX</p>
-        <p>📧 Email: rosyquilling@gmail.com</p>
+        <p>📱 WhatsApp: <?php echo $adminData['whatsapp']; ?></p>
+
+        <p>📧 Email: <?php echo $adminData['email']; ?></p>
     </div>
 
     <!-- CONTACT FORM -->

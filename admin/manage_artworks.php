@@ -144,12 +144,14 @@ $result = mysqli_query($conn, "SELECT * FROM gallery ORDER BY id DESC");
             <td>Rs. <?php echo $row['price'] ? $row['price'] : '...'; ?></td>
             <td><?php echo $row['category'] ? $row['category'] : '-'; ?></td>
             <td>
-                <a href="../admin/delete_artwork.php?id=<?php echo $row['id']; ?>" 
+                <a href="../admin/edit_artwork.php?id=<?php echo $row['id']; ?>" 
                    class="btn-edit">✏️ Edit</a>
-                &nbsp;
-                <a href="../admin/edit_artwork.php?id=<?php echo $row['id']; ?>"
+
+                <a href="../admin/delete_artwork.php?id=<?php echo $row['id']; ?>"
                    class="btn-delete"
-                   onclick="return confirm('Delete this artwork?')">🗑️ Delete</a>
+                   onclick="return confirm('Delete this artwork?')">
+                   🗑️ Delete
+                </a>
             </td>
         </tr>
         <?php } ?>

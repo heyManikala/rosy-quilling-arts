@@ -1,6 +1,8 @@
 <?php
 session_start();
 include("includes/db.php");
+$adminQuery = mysqli_query($conn, "SELECT * FROM admins LIMIT 1");
+$adminData = mysqli_fetch_assoc($adminQuery);
 ?>
 
 <!DOCTYPE html>
@@ -18,10 +20,7 @@ include("includes/db.php");
 
 <div style="max-width:800px;margin:auto;padding:20px;color:#555;line-height:1.8;">
 
-    Rosy Quilling Arts is a handmade craft brand.  
-    We create beautiful paper quilling designs for gifts and decoration.  
-
-    Every artwork is handmade with creativity and care.
+   <?php echo nl2br($adminData['about']); ?>
 
 </div>
 
