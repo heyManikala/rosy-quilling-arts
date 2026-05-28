@@ -3,13 +3,14 @@ session_start();
 include("includes/db.php");
 
 $search = "";
+$category = "";
 
-$limit = 8; // items per page
+$limit = 8;
 
 $page = isset($_GET['page']) ? $_GET['page'] : 1;
 $offset = ($page - 1) * $limit;
 
-if (isset($_GET['search'])) {
+if (isset($_GET['search']) && $_GET['search'] != '') {
     $search = $_GET['search'];
 
     $query = "SELECT * FROM gallery 
@@ -19,6 +20,18 @@ if (isset($_GET['search'])) {
 
     $countQuery = "SELECT COUNT(*) as total FROM gallery 
                    WHERE title LIKE '%$search%'";
+
+} elseif (isset($_GET['category']) && $_GET['category'] != '') {
+    $category = $_GET['category'];
+
+    $query = "SELECT * FROM gallery 
+              WHERE category='$category'
+              ORDER BY id DESC
+              LIMIT $limit OFFSET $offset";
+
+    $countQuery = "SELECT COUNT(*) as total FROM gallery 
+                   WHERE category='$category'";
+
 } else {
 
     $query = "SELECT * FROM gallery 
@@ -42,65 +55,65 @@ $totalPages = ceil($totalRow['total'] / $limit);
     <link rel="stylesheet" href="assets/css/style.css">
 
     <style>
-        /* SEARCH BOX */
         .card-img-wrapper {
-    position: relative;
-    overflow: visible;
-}
+            position: relative;
+            overflow: visible;
+        }
 
-.three-dots {
-    position: absolute;
-    bottom: 8px;
-    right: 8px;
-    background: white;
-    border-radius: 50%;
-    width: 30px;
-    height: 30px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 18px;
-    cursor: pointer;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-    z-index: 10;
-}
+        .three-dots {
+            position: absolute;
+            bottom: 8px;
+            right: 8px;
+            background: white;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+            z-index: 10;
+        }
 
-.three-dots:hover {
-    background: #f5f5f5;
-}
+        .three-dots:hover {
+            background: #f5f5f5;
+        }
 
-.dots-menu {
-    display: none;
-    position: absolute;
-    bottom: 45px;
-    right: 8px;
-    background: white;
-    border-radius: 10px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
-    z-index: 100;
-    min-width: 170px;
-    overflow: hidden;
-}
+        .dots-menu {
+            display: none;
+            position: absolute;
+            bottom: 45px;
+            right: 8px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+            z-index: 100;
+            min-width: 170px;
+            overflow: hidden;
+        }
 
-.dots-menu a {
-    display: block;
-    padding: 10px 15px;
-    color: #333;
-    text-decoration: none;
-    font-size: 14px;
-    background: none;
-    border-radius: 0;
-    margin: 0;
-}
+        .dots-menu a {
+            display: block;
+            padding: 10px 15px;
+            color: #333;
+            text-decoration: none;
+            font-size: 14px;
+            background: none;
+            border-radius: 0;
+            margin: 0;
+        }
 
-.dots-menu a:hover {
-    background: #faf0f2;
-    color: #b76e79;
-}
+        .dots-menu a:hover {
+            background: #faf0f2;
+            color: #b76e79;
+        }
 
-.dots-menu.active {
-    display: block;
-}
+        .dots-menu.active {
+            display: block;
+        }
+
         .search-box {
             text-align: center;
             margin: 20px;
@@ -113,7 +126,6 @@ $totalPages = ceil($totalRow['total'] / $limit);
             border: 1px solid #ddd;
         }
 
-        /* FILTERS */
         .filters {
             text-align: center;
             margin: 10px;
@@ -132,7 +144,6 @@ $totalPages = ceil($totalRow['total'] / $limit);
             background: #8c4c55;
         }
 
-        /* GRID (Instagram Style) */
         .grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -140,7 +151,6 @@ $totalPages = ceil($totalRow['total'] / $limit);
             padding: 20px;
         }
 
-        /* CARD */
         .card {
             position: relative;
             overflow: hidden;
@@ -155,7 +165,6 @@ $totalPages = ceil($totalRow['total'] / $limit);
             transform: scale(1.03);
         }
 
-        /* IMAGE */
         .card img {
             width: 100%;
             height: 220px;
@@ -168,7 +177,6 @@ $totalPages = ceil($totalRow['total'] / $limit);
             transform: scale(1.1);
         }
 
-        /* OVERLAY */
         .overlay {
             position: absolute;
             top: 0;
@@ -195,6 +203,31 @@ $totalPages = ceil($totalRow['total'] / $limit);
             text-decoration: none;
         }
 
+        .pagination {
+            text-align: center;
+            margin: 30px;
+        }
+
+        .pagination a {
+            margin: 3px;
+            padding: 8px 14px;
+            background: #b76e79;
+            color: white;
+            text-decoration: none;
+            border-radius: 20px;
+            font-size: 14px;
+        }
+
+        .pagination a:hover {
+            background: #8c4c55;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 50px;
+            color: #888;
+            font-size: 18px;
+        }
     </style>
 </head>
 
@@ -207,29 +240,49 @@ $totalPages = ceil($totalRow['total'] / $limit);
 <!-- SEARCH -->
 <div class="search-box">
     <form method="GET">
-        <input type="text" name="search" placeholder="Search artwork..." value="<?php echo $search; ?>">
+        <input type="text" name="search" 
+               placeholder="Search artwork..." 
+               value="<?php echo htmlspecialchars($search); ?>">
         <button type="submit">Search</button>
     </form>
 </div>
 
 <!-- FILTERS -->
 <div class="filters">
-    <a href="gallery.php">All</a>
-    <a href="gallery.php?search=flower">Flower</a>
-    <a href="gallery.php?search=gift">Gift</a>
-    <a href="gallery.php?search=wedding">Wedding</a>
+    <a href="gallery.php" 
+       style="<?php echo ($category == '' && $search == '') ? 'background:#8c4c55;' : ''; ?>">
+       All
+    </a>
+    <a href="gallery.php?category=flower"
+       style="<?php echo ($category == 'flower') ? 'background:#8c4c55;' : ''; ?>">
+       🌸 Flower
+    </a>
+    <a href="gallery.php?category=gift"
+       style="<?php echo ($category == 'gift') ? 'background:#8c4c55;' : ''; ?>">
+       🎁 Gift
+    </a>
+    <a href="gallery.php?category=wedding"
+       style="<?php echo ($category == 'wedding') ? 'background:#8c4c55;' : ''; ?>">
+       💍 Wedding
+    </a>
 </div>
-
 
 <!-- GALLERY GRID -->
 <div style="max-width:1200px; margin:0 auto;">
 <div class="grid">
+
+<?php if(mysqli_num_rows($result) == 0) { ?>
+    <div class="no-results">
+        <p>🌸 No artworks found.</p>
+    </div>
+<?php } ?>
 
 <?php while($row = mysqli_fetch_assoc($result)) { ?>
 <div class="card">
 
     <div class="card-img-wrapper">
         <img src="assets/images/<?php echo htmlspecialchars($row['image']); ?>"
+             alt="<?php echo htmlspecialchars($row['title']); ?>"
              onclick="openLightbox(this.src)">
 
         <div class="overlay">
@@ -241,17 +294,17 @@ $totalPages = ceil($totalRow['total'] / $limit);
 
         <!-- DROPDOWN MENU -->
         <div class="dots-menu">
-            <a href="assets/images/<?php echo $row['image']; ?>" download>
+            <a href="assets/images/<?php echo htmlspecialchars($row['image']); ?>" download>
                 ⬇️ Download Image
             </a>
-            <a href="#" onclick="openLightbox('assets/images/<?php echo $row['image']; ?>'); return false;">
+            <a href="#" onclick="openLightbox('assets/images/<?php echo htmlspecialchars($row['image']); ?>'); return false;">
                 🔍 View Large
             </a>
         </div>
     </div>
 
     <h3><?php echo htmlspecialchars($row['title']); ?></h3>
-    <p>Rs. <?php echo $row['price'] ? $row['price'] : '...'; ?></p>
+    <p>Rs. <?php echo $row['price'] ? htmlspecialchars($row['price']) : '...'; ?></p>
 
 </div>
 <?php } ?>
@@ -260,21 +313,21 @@ $totalPages = ceil($totalRow['total'] / $limit);
 </div>
 
 <!-- PAGINATION -->
-<div style="text-align:center; margin:30px;">
+<div class="pagination">
 
 <?php if($page > 1) { ?>
-    <a href="?page=<?php echo $page - 1; ?>&search=<?php echo $search; ?>">⬅ Prev</a>
+    <a href="?page=<?php echo $page - 1; ?>&search=<?php echo urlencode($search); ?>&category=<?php echo urlencode($category); ?>">⬅ Prev</a>
 <?php } ?>
 
 <?php for($i = 1; $i <= $totalPages; $i++) { ?>
-    <a href="?page=<?php echo $i; ?>&search=<?php echo $search; ?>"
+    <a href="?page=<?php echo $i; ?>&search=<?php echo urlencode($search); ?>&category=<?php echo urlencode($category); ?>"
        style="background: <?php echo ($page == $i) ? '#8c4c55' : '#b76e79'; ?>;">
         <?php echo $i; ?>
     </a>
 <?php } ?>
 
 <?php if($page < $totalPages) { ?>
-    <a href=" ?page=<?php echo $page + 1; ?>&search=<?php echo $search; ?>">Next ➡</a>
+    <a href="?page=<?php echo $page + 1; ?>&search=<?php echo urlencode($search); ?>&category=<?php echo urlencode($category); ?>">Next ➡</a>
 <?php } ?>
 
 </div>

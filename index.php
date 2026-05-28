@@ -147,7 +147,8 @@ while($row = mysqli_fetch_assoc($result)) {
 ?>
 
 <div class="card">
-    <img src="assets/images/<?php echo $row['image']; ?>">
+    <img src="assets/images/<?php echo htmlspecialchars($row['image']); ?>" 
+         alt="<?php echo htmlspecialchars($row['title']); ?>">
     <h3><?php echo $row['title']; ?></h3>
     <p>Rs. <?php echo $row['price']; ?></p>
 </div>
